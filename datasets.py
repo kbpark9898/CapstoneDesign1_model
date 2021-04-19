@@ -170,7 +170,8 @@ class XRaysTrainDataset(Dataset):
         all_xray_df = pd.read_csv(csv_path)
         print(all_xray_df.shape)
         df = pd.DataFrame()        
-        df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, 'images*', '*', '*.png'))]
+        #df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, 'images*', '*', '*.png'))]
+        df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, '*.png'))]
 
         df['Image Index'] = df['image_links'].apply(lambda x : x[len(x)-16:len(x)])
         print(df.shape)
