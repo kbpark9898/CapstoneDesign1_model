@@ -197,7 +197,7 @@ class XRaysTestDataset(Dataset):
         self.data_dir = data_dir
         self.transform = transform
         # print('self.data_dir: ', self.data_dir)
-
+        # test test
         # full dataframe including train_val and test set
         self.df = self.get_df()
         print('\nself.df.shape: {}'.format(self.df.shape))
