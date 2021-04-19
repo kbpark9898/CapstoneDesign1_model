@@ -85,7 +85,7 @@ class XRaysTrainDataset(Dataset):
 
     def __getitem__(self, index):
         row = self.new_df.iloc[index, :]
-
+        print(row[0])
         img = cv2.imread(row['image_links'])
         labels = str.split(row['Finding Labels'], '|')
         
@@ -164,7 +164,7 @@ class XRaysTrainDataset(Dataset):
         return the_chosen, sorted(list(all_classes)), all_classes
     
     def get_df(self):
-        csv_path = os.path.join(self.data_dir, 'Data_Entry_2017.csv')
+        csv_path = os.path.join(self.data_dir, 'Data_Entry_2017_v2020.csv')
         print('\n{} found: {}'.format(csv_path, os.path.exists(csv_path)))
         
         all_xray_df = pd.read_csv(csv_path)
@@ -241,7 +241,7 @@ class XRaysTestDataset(Dataset):
             os.mkdir(pkl_dir_path)
 
     def get_df(self):
-        csv_path = os.path.join(self.data_dir, 'Data_Entry_2017.csv')
+        csv_path = os.path.join(self.data_dir, 'Data_Entry_2017_v2020.csv')
         
         all_xray_df = pd.read_csv(csv_path)
 
