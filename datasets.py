@@ -168,7 +168,7 @@ class XRaysTrainDataset(Dataset):
         print('\n{} found: {}'.format(csv_path, os.path.exists(csv_path)))
         
         all_xray_df = pd.read_csv(csv_path)
-
+        print(all_xray_df.shape)
         df = pd.DataFrame()        
         df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, 'images*', '*', '*.png'))]
 
