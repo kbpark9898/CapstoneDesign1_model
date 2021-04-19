@@ -85,7 +85,6 @@ class XRaysTrainDataset(Dataset):
 
     def __getitem__(self, index):
         row = self.new_df.iloc[index, :]
-        print(row[0])
         img = cv2.imread(row['image_links'])
         labels = str.split(row['Finding Labels'], '|')
         

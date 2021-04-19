@@ -23,11 +23,12 @@ def q(text = ''): # easy way to exiting the script. useful while debugging
     print('> ', text)
     sys.exit()
 
+print(torch.cuda.is_available())
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 print(f'\ndevice: {device}')
     
 parser = argparse.ArgumentParser(description='Following are the arguments that can be passed form the terminal itself ! Cool huh ? :D')
-parser.add_argument('--data_path', type = str, default = 'NIH Chest X-rays', help = 'This is the path of the training data')
+parser.add_argument('--data_path', type = str, default = '/root/share/images', help = 'This is the path of the training data')
 parser.add_argument('--bs', type = int, default = 128, help = 'batch size')
 parser.add_argument('--lr', type = float, default = 1e-5, help = 'Learning Rate for the optimizer')
 parser.add_argument('--stage', type = int, default = 1, help = 'Stage, it decides which layers of the Neural Net to train')
