@@ -173,8 +173,11 @@ class XRaysTrainDataset(Dataset):
         df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, 'images*', '*', '*.png'))]
 
         df['Image Index'] = df['image_links'].apply(lambda x : x[len(x)-16:len(x)])
+        print(df.shape)
         merged_df = df.merge(all_xray_df, how = 'inner', on = ['Image Index'])
+        print(merged_df.shape)
         merged_df = merged_df[['image_links','Finding Labels']]
+        print(merged_df.shape)
         return merged_df
     
     def get_train_val_list(self):
