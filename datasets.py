@@ -75,11 +75,11 @@ class XRaysTrainDataset(Dataset):
         print('\nbuilding train_val_df...')
         for i in tqdm(range(self.df.shape[0])):
             filename  = os.path.basename(self.df.iloc[i,0])
-            # print('filename: ', filename)
+            print('filename: ', filename)
             if filename in train_val_list:
                 train_val_df = train_val_df.append(self.df.iloc[i:i+1, :])
 
-        # print('train_val_df.shape: {}'.format(train_val_df.shape))
+        print('train_val_df.shape: {}'.format(train_val_df.shape))
 
         return train_val_df
 
@@ -184,6 +184,7 @@ class XRaysTrainDataset(Dataset):
     def get_train_val_list(self):
         f = open(os.path.join('/root/share/data_csv', 'train_val_list.txt'), 'r')
         train_val_list = str.split(f.read(), '\n')
+        print(train_val_list)
         return train_val_list
 
     def __len__(self):
