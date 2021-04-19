@@ -75,7 +75,7 @@ class XRaysTrainDataset(Dataset):
         print('\nbuilding train_val_df...')
         for i in tqdm(range(self.df.shape[0])):
             filename  = os.path.basename(self.df.iloc[i,0])
-            print('filename: ', filename)
+            #print('filename: ', filename)
             if filename in train_val_list:
                 train_val_df = train_val_df.append(self.df.iloc[i:i+1, :])
 
@@ -168,23 +168,23 @@ class XRaysTrainDataset(Dataset):
         print('\n{} found: {}'.format(csv_path, os.path.exists(csv_path)))
         
         all_xray_df = pd.read_csv(csv_path)
-        print(all_xray_df.shape)
+        #print(all_xray_df.shape)
         df = pd.DataFrame()        
         #df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, 'images*', '*', '*.png'))]
         df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, '*.png'))]
 
         df['Image Index'] = df['image_links'].apply(lambda x : x[len(x)-16:len(x)])
-        print(df.shape)
+        #print(df.shape)
         merged_df = df.merge(all_xray_df, how = 'inner', on = ['Image Index'])
-        print(merged_df.shape)
+        #print(merged_df.shape)
         merged_df = merged_df[['image_links','Finding Labels']]
-        print(merged_df.shape)
+        #print(merged_df.shape)
         return merged_df
     
     def get_train_val_list(self):
         f = open(os.path.join('/root/share/data_csv', 'train_val_list.txt'), 'r')
         train_val_list = str.split(f.read(), '\n')
-        print(train_val_list)
+        #print(train_val_list)
         return train_val_list
 
     def __len__(self):
