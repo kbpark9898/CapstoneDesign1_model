@@ -24,12 +24,12 @@ def q(text = ''): # easy way to exiting the script. useful while debugging
     sys.exit()
 
 print(torch.cuda.is_available())
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+device = torch.device("cuda:1") if torch.cuda.is_available() else torch.device("cpu")
 print(f'\ndevice: {device}')
     
 parser = argparse.ArgumentParser(description='Following are the arguments that can be passed form the terminal itself ! Cool huh ? :D')
 parser.add_argument('--data_path', type = str, default = '/root/share/images', help = 'This is the path of the training data')
-parser.add_argument('--bs', type = int, default = 128, help = 'batch size')
+parser.add_argument('--bs', type = int, default = 64, help = 'batch size')
 parser.add_argument('--lr', type = float, default = 1e-5, help = 'Learning Rate for the optimizer')
 parser.add_argument('--stage', type = int, default = 1, help = 'Stage, it decides which layers of the Neural Net to train')
 parser.add_argument('--loss_func', type = str, default = 'FocalLoss', choices = {'BCE', 'FocalLoss'}, help = 'loss function')
@@ -78,9 +78,9 @@ print('-------------------------------------')
 
 # make the dataloaders
 batch_size = args.bs # 128 by default
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size = batch_size, shuffle = not True)
-test_loader = torch.utils.data.DataLoader(XRayTest_dataset, batch_size = batch_size, shuffle = not True)
+train_loader = torch.utils.data.DataLoader(train_dataset, num_workers=6, batch_size = batch_size, shuffle = True)
+val_loader = torch.utils.data.DataLoader(val_dataset, num_workers=3, batch_size = batch_size, shuffle = not True)
+test_loader = torch.utils.data.DataLoader(XRayTest_dataset, num_workers=6, batch_size = batch_size, shuffle = not True)
 
 print('\n-----Initial Batchloaders Information -----')
 print('num batches in train_loader: {}'.format(len(train_loader)))
@@ -234,7 +234,7 @@ optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr
 fit(device, XRayTrain_dataset, train_loader, val_loader,    
                                         test_loader, model, loss_fn, 
                                         optimizer, losses_dict,
-                                        epochs_till_now = epochs_till_now, epochs = 3,
+                                        epochs_till_now = epochs_till_now, epochs = 50,
                                         log_interval = 25, save_interval = 1,
                                         lr = lr, bs = batch_size, stage = stage,
                                         test_only = args.test)

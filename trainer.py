@@ -96,8 +96,8 @@ def get_resampled_train_val_dataloaders(XRayTrain_dataset, transform, bs):
     print('---------------------------------------')
 
     # make dataloaders
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = bs, shuffle = True)
-    val_loader   = torch.utils.data.DataLoader(val_dataset,   batch_size = bs, shuffle = not True)
+    train_loader = torch.utils.data.DataLoader(train_dataset,num_workers=6, batch_size = bs, shuffle = True)
+    val_loader   = torch.utils.data.DataLoader(val_dataset,num_workers=3,   batch_size = bs, shuffle = not True)
 
     print('\n-----Resampled Batchloaders Information -----')
     print('num batches in train_loader: {}'.format(len(train_loader)))
