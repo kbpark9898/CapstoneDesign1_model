@@ -28,7 +28,7 @@ device = torch.device("cuda:1") if torch.cuda.is_available() else torch.device("
 print(f'\ndevice: {device}')
     
 parser = argparse.ArgumentParser(description='Following are the arguments that can be passed form the terminal itself ! Cool huh ? :D')
-parser.add_argument('--data_path', type = str, default = '/root/share/images', help = 'This is the path of the training data')
+parser.add_argument('--data_path', type = str, default = '/root/share/images_preprocessed', help = 'This is the path of the training data')
 parser.add_argument('--bs', type = int, default = 64, help = 'batch size')
 parser.add_argument('--lr', type = float, default = 1e-5, help = 'Learning Rate for the optimizer')
 parser.add_argument('--stage', type = int, default = 1, help = 'Stage, it decides which layers of the Neural Net to train')
@@ -115,7 +115,8 @@ if not args.test: # training
     if not args.resume:
         print('\ntraining from scratch')
         # import pretrained model
-        model = models.resnet50(pretrained=True) # pretrained = False bydefault
+        #model = models.resnet50(pretrained=True) # pretrained = False bydefault
+        model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet18', pretrained=False)
         # change the last linear layer
         num_ftrs = model.fc.in_features
         model.fc = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes)) # 15 output classes 

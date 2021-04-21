@@ -250,7 +250,7 @@ class XRaysTestDataset(Dataset):
         all_xray_df = pd.read_csv(csv_path)
 
         df = pd.DataFrame()        
-        df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, 'images*', '*', '*.png'))]
+        df['image_links'] = [x for x in glob.glob(os.path.join(self.data_dir, '*.png'))]
 
         df['Image Index'] = df['image_links'].apply(lambda x : x[len(x)-16:len(x)])
         merged_df = df.merge(all_xray_df, how = 'inner', on = ['Image Index'])
@@ -261,13 +261,14 @@ class XRaysTestDataset(Dataset):
 
         # get the list of test data 
         test_list = self.get_test_list()
-
+        print(len(test_list))
         test_df = pd.DataFrame()
         print('\nbuilding test_df...')
         for i in tqdm(range(self.df.shape[0])):
             filename  = os.path.basename(self.df.iloc[i,0])
-            # print('filename: ', filename)
+            print('filename: ', filename)
             if filename in test_list:
+                print('filename: ', filename)
                 test_df = test_df.append(self.df.iloc[i:i+1, :])
          
         print('test_df.shape: ', test_df.shape)
@@ -277,6 +278,7 @@ class XRaysTestDataset(Dataset):
     def get_test_list(self):
         f = open( os.path.join('/root/share/data_csv', 'test_list.txt'), 'r')
         test_list = str.split(f.read(), '\n')
+        print(test_list)
         return test_list
 
     def __len__(self):
