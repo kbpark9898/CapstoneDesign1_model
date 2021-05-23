@@ -2,7 +2,7 @@ pkl_dir_path             = 'pickles'
 train_val_df_pkl_path    = 'train_val_df.pickle'
 test_df_pkl_path         = 'test_df.pickle'
 disease_classes_pkl_path = 'disease_classes.pickle'
-models_dir               = 'models'
+models_dir               = 'densenet201_models'
 
 from torchvision import transforms
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],

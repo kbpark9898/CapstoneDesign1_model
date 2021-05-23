@@ -116,10 +116,13 @@ if not args.test: # training
         print('\ntraining from scratch')
         # import pretrained model
         #model = models.resnet50(pretrained=True) # pretrained = False bydefault
-        model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet18', pretrained=False)
+        #model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+        model = torch.hub.load('pytorch/vision:v0.9.0', 'densenet201', pretrained=False)
         # change the last linear layer
-        num_ftrs = model.fc.in_features
-        model.fc = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes)) # 15 output classes 
+       # num_ftrs = model.fc.in_features
+        num_ftrs = model.classifier.in_features
+        #model.fc = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes)) # 15 output classes 
+        model.classifier = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes))
         model.to(device)
         
         print('----- STAGE 1 -----') # only training 'layer2', 'layer3', 'layer4' and 'fc'
