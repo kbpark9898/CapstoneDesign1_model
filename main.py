@@ -8,7 +8,9 @@ import cv2
 import torch
 import torch.nn as nn
 import torchvision.models as models 
-
+from torchvision.datasets import ImageFolder
+import torch.utils.data as data
+from torchvision import transforms
 # import custom dataset classes
 from datasets import XRaysTrainDataset  
 from datasets import XRaysTestDataset
@@ -78,7 +80,11 @@ print('-------------------------------------')
 
 # make the dataloaders
 batch_size = args.bs # 128 by default
-train_loader = torch.utils.data.DataLoader(train_dataset, num_workers=6, batch_size = batch_size, shuffle = True)
+train_images = ImageFolder("/root/share/origin_train")
+val_images = ImageFolder("/root/share/origin_valid")
+test_images = ImageFolder("/root/share/origin_test")
+#train_loader = torch.utils.data.DataLoader(train_dataset, num_workers=6, batch_size = batch_size, shuffle = True)
+train_loader = torch.utils.data.DataLoader(train_images, num_workers=6, batch_size = batch_size, shuffle = True)
 val_loader = torch.utils.data.DataLoader(val_dataset, num_workers=3, batch_size = batch_size, shuffle = not True)
 test_loader = torch.utils.data.DataLoader(XRayTest_dataset, num_workers=6, batch_size = batch_size, shuffle = not True)
 
@@ -89,11 +95,11 @@ print('num batches in test_loader : {}'.format(len(test_loader)))
 print('-------------------------------------------')
 
 # sanity check
-if len(XRayTrain_dataset.all_classes) != 15: # 15 is the unique number of diseases in this dataset
-    q('\nnumber of classes not equal to 15 !')
+# if len(XRayTrain_dataset.all_classes) != 15: # 15 is the unique number of diseases in this dataset
+#     q('\nnumber of classes not equal to 15 !')
 
-a,b = train_dataset[0]
-print('\nwe are working with \nImages shape: {} and \nTarget shape: {}'.format( a.shape, b.shape))
+# a,b = train_dataset[0]
+# print('\nwe are working with \nImages shape: {} and \nTarget shape: {}'.format( a.shape, b.shape))
 
 # make models directory, where the models and the loss plots will be saved
 if not os.path.exists(config.models_dir):
@@ -116,13 +122,13 @@ if not args.test: # training
         print('\ntraining from scratch')
         # import pretrained model
         #model = models.resnet50(pretrained=True) # pretrained = False bydefault
-        #model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
-        model = torch.hub.load('pytorch/vision:v0.9.0', 'densenet201', pretrained=False)
+        model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+        #model = torch.hub.load('pytorch/vision:v0.9.0', 'densenet201', pretrained=False)
         # change the last linear layer
-       # num_ftrs = model.fc.in_features
-        num_ftrs = model.classifier.in_features
-        #model.fc = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes)) # 15 output classes 
-        model.classifier = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes))
+        num_ftrs = model.fc.in_features
+        #num_ftrs = model.classifier.in_features
+        model.fc = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes)) # 15 output classes 
+        #model.classifier = nn.Linear(num_ftrs, len(XRayTrain_dataset.all_classes))
         model.to(device)
         
         print('----- STAGE 1 -----') # only training 'layer2', 'layer3', 'layer4' and 'fc'
