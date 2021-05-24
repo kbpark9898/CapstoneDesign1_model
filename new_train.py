@@ -11,7 +11,7 @@ import time
 import copy
 
 
-def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dataset_sizes,num_epochs=25 ):
+def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dataset_sizes,num_epochs=50 ):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -67,6 +67,13 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
+                torch.save({
+                    'epoch':epoch,
+                    "model_state_dict":best_model_wts,
+                    'optimizer_state_dict':optimizer.state_dict(),
+                    'loss':loss,
+                    'path':'/root/share/result/new_resnet50/resnet50_#{0}'.format(epoch)
+                })
 
         print()
 
@@ -78,3 +85,18 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
     # 가장 나은 모델 가중치를 불러옴
     model.load_state_dict(best_model_wts)
     return model
+
+def test_model(model, dataloaders):
+    since = time.time()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for data in dataloaders['test']:
+            images, labels = data
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+    print('Accuracy of the network on the 10000 test images: %d %%' % (
+        100 * correct / total))
