@@ -22,7 +22,7 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
         print('-' * 10)
 
         # 각 에폭(epoch)은 학습 단계와 검증 단계를 갖습니다.
-        for phase in ['train', 'val']:
+        for phase in ['train', 'valid']:
             if phase == 'train':
                 model.train()  # 모델을 학습 모드로 설정
             else:
@@ -63,17 +63,17 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(
                 phase, epoch_loss, epoch_acc))
 
-            # 모델을 깊은 복사(deep copy)함
-            if phase == 'val' and epoch_acc > best_acc:
+            # 모델을 깊은 복사(deep copy)�
+            if phase == 'valid' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
                 torch.save({
                     'epoch':epoch,
                     "model_state_dict":best_model_wts,
                     'optimizer_state_dict':optimizer.state_dict(),
-                    'loss':loss,
-                    'path':'/root/share/result/new_resnet50/resnet50_#{0}'.format(epoch)
-                })
+                    'loss':loss
+                }, '/root/share/result/new_resnet50/resnet50_epoch{}'.format(epoch)+'.pth')
+                print('saved!')
 
         print()
 

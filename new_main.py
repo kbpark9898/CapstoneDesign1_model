@@ -15,10 +15,13 @@ print(torch.cuda.is_available())
 device = torch.device("cuda:1") if torch.cuda.is_available() else torch.device("cpu")
 print(f'\ndevice: {device}')
 
-parameter='test'
+parameter='train'
 
 model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
-model.load_state_dict(torch.load('/root/share/result/resnet50_result/stage1_1e-05_50.pth'))
+num_ftrs = model.fc.in_features
+model.fc = nn.Linear(num_ftrs, 15)
+ckpt = torch.load('/root/share/result/resnet50_models/stage1_1e-05_50.pth')
+model.load_state_dict(ckpt['model'].state_dict())
 path = '/root/share/origin'
 lr=1e-5
 
@@ -49,8 +52,8 @@ dataset_sizes={
     'valid':valid_size,
     'test':test_size
 }
-loss_fn = FocalLoss(device = device, gamma = 2.).to(device)
-
+#loss_fn = FocalLoss(device = device, gamma = 2.).to(device)
+loss_fn = nn.CrossEntropyLoss()
 num_ftrs = model.fc.in_features
 # 여기서 각 출력 샘플의 크기는 2로 설정합니다.
 # 또는, nn.Linear(num_ftrs, len (class_names))로 일반화할 수 있습니다.
@@ -60,6 +63,8 @@ model.fc = nn.Linear(num_ftrs, 2)
 model = model.to(device)
 optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr = lr)
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+
+print("let's start!")
 
 if parameter=='train':
     model = train_model(model, device, loss_fn, optimizer, exp_lr_scheduler, dataloaders, dataset_sizes,
