@@ -15,7 +15,7 @@ print(torch.cuda.is_available())
 device = torch.device("cuda:1") if torch.cuda.is_available() else torch.device("cpu")
 print(f'\ndevice: {device}')
 
-parameter='train'
+parameter='test'
 
 model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
 num_ftrs = model.fc.in_features
@@ -24,6 +24,13 @@ ckpt = torch.load('/root/share/result/resnet50_models/stage1_1e-05_50.pth')
 model.load_state_dict(ckpt['model'].state_dict())
 path = '/root/share/origin'
 lr=1e-5
+
+
+if parameter=='test':
+    model.fc=nn.Linear(num_ftrs, 2)
+    ckpt = torch.load('/root/share/result/new_resnet50/resnet50_epoch12.pth')
+    model.load_state_dict(ckpt['model_state_dict'])
+
 
 data_transforms = transforms.Compose([
 transforms.RandomResizedCrop(224),
@@ -70,7 +77,7 @@ if parameter=='train':
     model = train_model(model, device, loss_fn, optimizer, exp_lr_scheduler, dataloaders, dataset_sizes,
                        num_epochs=50)
 else:
-    test_model(model, dataloaders)
+    test_model(model,device, dataloaders)
 
 
 #학습 및 테스트까지 1차 구현
