@@ -72,7 +72,8 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
                     "model_state_dict":best_model_wts,
                     'optimizer_state_dict':optimizer.state_dict(),
                     'loss':loss
-                }, '/root/share/result/new_resnet50/resnet50_epoch{}'.format(epoch)+'.pth')
+                }, '/root/share/result/new_resnet50/no_pretrained/resnet50_epoch{}'.format(epoch)+'.pth')
+                #if you want to use pretrained model, use /root/share/result/new_resnet50/resnet50_epoch*.pth
                 print('saved!')
 
         print()

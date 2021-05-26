@@ -18,17 +18,18 @@ print(f'\ndevice: {device}')
 parameter='test'
 
 model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+#to use pretrained model, use this captioned code
 num_ftrs = model.fc.in_features
-model.fc = nn.Linear(num_ftrs, 15)
-ckpt = torch.load('/root/share/result/resnet50_models/stage1_1e-05_50.pth')
-model.load_state_dict(ckpt['model'].state_dict())
+#model.fc = nn.Linear(num_ftrs, 15)
+#ckpt = torch.load('/root/share/result/resnet50_models/stage1_1e-05_50.pth')
+#model.load_state_dict(ckpt['model'].state_dict())
 path = '/root/share/origin'
 lr=1e-5
 
 
 if parameter=='test':
     model.fc=nn.Linear(num_ftrs, 2)
-    ckpt = torch.load('/root/share/result/new_resnet50/resnet50_epoch12.pth')
+    ckpt = torch.load('/root/share/result/new_resnet50/no_pretrained/resnet50_epoch38.pth')
     model.load_state_dict(ckpt['model_state_dict'])
 
 
