@@ -17,19 +17,19 @@ print(f'\ndevice: {device}')
 
 parameter='test'
 
-model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=True)
 #to use pretrained model, use this captioned code
 num_ftrs = model.fc.in_features
-#model.fc = nn.Linear(num_ftrs, 15)
-#ckpt = torch.load('/root/share/result/resnet50_models/stage1_1e-05_50.pth')
-#model.load_state_dict(ckpt['model'].state_dict())
+model.fc = nn.Linear(num_ftrs, 15)
+ckpt = torch.load('/root/share/result/resnet50_models/ImageNet_pretrained/stage1_1e-05_50.pth')
+model.load_state_dict(ckpt['model'].state_dict())
 path = '/root/share/origin'
 lr=1e-5
 
 
 if parameter=='test':
     model.fc=nn.Linear(num_ftrs, 2)
-    ckpt = torch.load('/root/share/result/new_resnet50/no_pretrained/resnet50_epoch38.pth')
+    ckpt = torch.load('/root/share/result/new_resnet50/ImageNet_based/resnet50_epoch17.pth')
     model.load_state_dict(ckpt['model_state_dict'])
 
 
@@ -61,7 +61,9 @@ dataset_sizes={
     'test':test_size
 }
 #loss_fn = FocalLoss(device = device, gamma = 2.).to(device)
-loss_fn = nn.CrossEntropyLoss()
+loss_fn = nn.CrossEntropyLoss().to(device)
+#pos_weight = torch.ones([2])
+#loss_fn = nn.BCEWithLogitsLoss().to(device)
 num_ftrs = model.fc.in_features
 # 여기서 각 출력 샘플의 크기는 2로 설정합니다.
 # 또는, nn.Linear(num_ftrs, len (class_names))로 일반화할 수 있습니다.

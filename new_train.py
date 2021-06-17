@@ -44,8 +44,11 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
                 with torch.set_grad_enabled(phase == 'train'):
                     outputs = model(inputs)
                     _, preds = torch.max(outputs, 1)
-                    loss = criterion(outputs, labels)
+                    #To use BCEWithLogitsLoss, squeeze the input tensor and type cast the labels
+                    #If you want to use other loss function for multi-label classification, do not squeeze and cast the type
 
+                    #labels = labels.type_as(outputs)
+                    loss = criterion(outputs, labels)
                     # 학습 단계인 경우 역전파 + 최적화
                     if phase == 'train':
                         loss.backward()
@@ -72,7 +75,7 @@ def train_model(model, device, criterion, optimizer, scheduler, dataloaders, dat
                     "model_state_dict":best_model_wts,
                     'optimizer_state_dict':optimizer.state_dict(),
                     'loss':loss
-                }, '/root/share/result/new_resnet50/no_pretrained/resnet50_epoch{}'.format(epoch)+'.pth')
+                }, '/root/share/result/new_resnet50/ImageNet_based/resnet50_epoch{}'.format(epoch)+'.pth')
                 #if you want to use pretrained model, use /root/share/result/new_resnet50/resnet50_epoch*.pth
                 print('saved!')
 

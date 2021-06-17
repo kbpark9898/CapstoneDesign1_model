@@ -80,11 +80,11 @@ print('-------------------------------------')
 
 # make the dataloaders
 batch_size = args.bs # 128 by default
-train_images = ImageFolder("/root/share/origin_train")
-val_images = ImageFolder("/root/share/origin_valid")
-test_images = ImageFolder("/root/share/origin_test")
-#train_loader = torch.utils.data.DataLoader(train_dataset, num_workers=6, batch_size = batch_size, shuffle = True)
-train_loader = torch.utils.data.DataLoader(train_images, num_workers=6, batch_size = batch_size, shuffle = True)
+#train_images = ImageFolder("/root/share/origin_train")
+#val_images = ImageFolder("/root/share/origin_valid")
+#test_images = ImageFolder("/root/share/origin_test")
+train_loader = torch.utils.data.DataLoader(train_dataset, num_workers=6, batch_size = batch_size, shuffle = True)
+#train_loader = torch.utils.data.DataLoader(train_images, num_workers=6, batch_size = batch_size, shuffle = True)
 val_loader = torch.utils.data.DataLoader(val_dataset, num_workers=3, batch_size = batch_size, shuffle = not True)
 test_loader = torch.utils.data.DataLoader(XRayTest_dataset, num_workers=6, batch_size = batch_size, shuffle = not True)
 
@@ -122,7 +122,7 @@ if not args.test: # training
         print('\ntraining from scratch')
         # import pretrained model
         #model = models.resnet50(pretrained=True) # pretrained = False bydefault
-        model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+        model = torch.hub.load('pytorch/vision:v0.9.0', 'resnet50', pretrained=True)
         #model = torch.hub.load('pytorch/vision:v0.9.0', 'densenet201', pretrained=False)
         # change the last linear layer
         num_ftrs = model.fc.in_features
