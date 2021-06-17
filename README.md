@@ -1,6 +1,10 @@
 # Chest X-ray classification with pyTorch
 흉부 X-ray에 대해 학습시키기 위한 pyTorch resnet, densenet 모델입니다.
 
+본 모델은 2021-1 경희대학교 컴퓨터공학과 캡스톤디자인1 과목에서 수행된 'X-ray 이미지 및 딥러닝을 이용한 병변 인식' 연구의 일환입니다.
+
+(작성자 : 경희대학교 컴퓨터공학과 4학년 2016104122 박기범)
+
 # Requirements
 * torch >= 0.4    
 * torchvision >= 0.2.2
