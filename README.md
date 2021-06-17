@@ -240,3 +240,36 @@ newData branch의 모델에서 다음과 같은 학습환경을 적용했습니�
     * 모델 3 : 61%
     * 모델 4 : 44%
 
+
+# Version
+
+본 코드의 버전 관리를 기록합니다.
+
+[ 버전 ] ( 코드 수정 완료 일자) 의 형태로 서술합니다.
+1. Ver 1.0 (2021.04.19)
+    - 존재하는 dataset에 맞춰 data load 방법을 편집했습니다.
+    - 불필요한 checkpoint 및 중간 결과에 따른 이미지 파일을 삭제했습니다.
+
+2. Ver 2.0 (2021.04.21)
+    - resnet50 모델에 대해 NIH dataset을 학습시킬 수 있도록 fine tuning을 마쳤습니다.
+    - resnet50에 대해 학습을 마쳤으며, 테스트를 완료했습니다.
+
+3. Ver 2.1 (2021.04.21)
+    - 다른 계층의 resnet 모델을 불러올 수 있도록 수정했습니다.
+    - 이 버전을 사용하여 resnet 18/34/101에 대한 학습 및 테스트를 진행했습니다.
+
+4. Ver 2.2 (2021.05.17)
+    - densenet 121/169에 대해 NIH dataset을 학습시킬 수 있도록 fine tuning 했습니다.
+    - 이 버전을 사용하여 densenet 121/169에 대한 학습 및 테스트를 진행했습니다.
+
+5. Ver 3.0 (2021.05.24)
+    - newData branch를 생성하여 다음과 같은 작업을 수행했습니다.
+      - 새로운 흉부 X-ray dataset(심장비대증에 대한 X-ray binay classification dataaset)에 대해 resnet50을 학습시킬 수 있도록 data loader, 및 train 함수를 재설계 하였으며, 모델의 fine tuning을 진행했습니다.
+      - checkpoint file에 담기는 모델의 정보를 변경하여 checkpoint를 경량화했습니다.
+
+6. Ver 3.1 (2021.05.26)
+    - 손실 함수 계산에 gpu를 사용할 수 있도록 코드를 수정하여 학습 및 테스트 속도를 항샹시켰습니다.
+     - 이 버전을 사용하여 pretrain에 따른 심장비대증 X-ray dataset의 분류 성능을 연구했습니다.
+
+7. Ver 3.2 (2021.06.17)
+    - 본 연구 목적 및 코드 개발 사항에 따라 최종적으로 readme를 수정했습니다.
